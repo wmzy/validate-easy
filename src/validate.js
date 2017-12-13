@@ -37,8 +37,8 @@ export default function validate(...fnArr) {
   }
 }
 
-export function path(...fnArr) {
-  return path => value => {
+export function path(path) {
+  return (...fnArr) => value => {
     const res = validate(...fnArr)(_.get(path, value));
     if (res instanceof ValidateError) {
       res.join(path);

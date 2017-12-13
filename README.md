@@ -15,8 +15,8 @@ import v from 'validate-easy';
 
 const data = v(
   v.hasProps('foo', 'bar', 'baz'),
-  v.path(v.isNumber, v.lt(10), v.gt(0))('foo'),
-  v.path(_.trim, Number, v.isInt)('bar')
+  v.path('foo')(v.isNumber, v.lt(10), v.gt(0)),
+  v.path('bar')(_.trim, Number, v.isInt)
 )({
   foo: 5,
   bar: ' 4',
