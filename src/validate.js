@@ -73,3 +73,7 @@ export const gt = rv => wrap(v => v > rv, `should be a gt ${rv}`)
 export function isValidateError(e) {
   return e instanceof ValidateError;
 }
+
+export function assert(err) {
+  if (isValidateError(err)) throw err;
+}

@@ -11,6 +11,7 @@ npm install validate-easy
 ### Usage
 
 ```javascript
+import _ from 'lodash';
 import v from 'validate-easy';
 
 const data = v(
@@ -23,16 +24,15 @@ const data = v(
   baz: null
 })
 
-if (v.isValidateError(data)) {
-  // todo
-} else {
-  // result
-  // {
-  //   foo: 5,
-  //   bar: 4,
-  //   baz: null
-  // }
-}
+v.assert(data);
+
+console.log(data);
+// result
+// {
+//   foo: 5,
+//   bar: 4,
+//   baz: null
+// }
 
 ```
 
