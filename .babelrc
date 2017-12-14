@@ -1,9 +1,10 @@
 {
   "presets": [
-    ["babel-preset-env", {
+    ["env", {
+      "modules": "umd",
       "targets": {
-        "node": true,
-        "browsers": ["last 2 versions", "safari 7"]
+        "browsers": ["last 2 versions"],
+        "node": 6
       }
     }]
   ]

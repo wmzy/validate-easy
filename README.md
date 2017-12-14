@@ -1,6 +1,8 @@
+[![Build Status](https://travis-ci.org/wmzy/validate-easy.svg?branch=master)](https://travis-ci.org/wmzy/validate-easy)
+[![Coverage Status](https://coveralls.io/repos/github/wmzy/validate-easy/badge.svg?branch=master)](https://coveralls.io/github/wmzy/validate-easy?branch=master)
 ## Validate easy
 
-> (wip) Validate your data easy with pipe style.
+> (wip) Validate your data easy with pipeline style.
 
 ### Install
 

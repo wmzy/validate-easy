@@ -1,19 +1,29 @@
 {
   "name": "validate-easy",
   "version": "0.2.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Validate your data easy with pipeline style.",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "mocha -r babel-core/register -r should",
+    "test": "nyc mocha -r babel-core/register -r should",
+    "build": "babel promise-pending-lock.js --out-file index.js",
+    "prepublish": "npm run build",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "dev": "npm test -- --watch"
   },
-  "keywords": [],
+  "keywords": [
+    "validate",
+    "pipe",
+    "pipeline",
+    "functional"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "coveralls": "^3.0.0",
     "mocha": "^4.0.1",
+    "nyc": "^11.3.0",
     "should": "^13.1.3"
   },
   "dependencies": {
