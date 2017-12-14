@@ -37,6 +37,16 @@ export default function validate(...fnArr) {
   }
 }
 
+export function assert(...fnArr) {
+  return value => {
+    for (let fn of fnArr) {
+      value = fn(value);
+      if (value instanceof ValidateError) throw value;
+    }
+    return value;
+  }
+}
+
 export function path(path) {
   return (...fnArr) => value => {
     const res = validate(...fnArr)(_.get(path, value));
@@ -74,6 +84,6 @@ export function isValidateError(e) {
   return e instanceof ValidateError;
 }
 
-export function assert(err) {
+export function assertValue(err) {
   if (isValidateError(err)) throw err;
 }

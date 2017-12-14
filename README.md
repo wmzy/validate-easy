@@ -14,7 +14,7 @@ npm install validate-easy
 import _ from 'lodash';
 import v from 'validate-easy';
 
-const data = v(
+const data = v.assert(
   v.hasProps('foo', 'bar', 'baz'),
   v.path('foo')(v.isNumber, v.lt(10), v.gt(0)),
   v.path('bar')(_.trim, Number, v.isInt)
@@ -23,8 +23,6 @@ const data = v(
   bar: ' 4',
   baz: null
 })
-
-v.assert(data);
 
 console.log(data);
 // result
