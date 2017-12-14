@@ -77,8 +77,8 @@ export function hasProps(...props) {
 export const isNumber = wrap(_.isNumber, 'should be a number')
 export const isInt = wrap(_.isInteger, 'should be a number')
 
-export const lt = rv => wrap(v => v < rv, `should be a lt ${rv}`)
-export const gt = rv => wrap(v => v > rv, `should be a gt ${rv}`)
+export const lt = rv => wrap(v => v < rv, `should lt ${rv}`)
+export const gt = rv => wrap(v => v > rv, `should gt ${rv}`)
 
 export function isValidateError(e) {
   return e instanceof ValidateError;
