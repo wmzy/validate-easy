@@ -1,6 +1,6 @@
 {
   "name": "validate-easy",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Validate your data easy with pipeline style.",
   "main": "lib/index.js",
   "scripts": {
