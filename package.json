@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "nyc mocha -r babel-core/register -r should",
-    "build": "babel promise-pending-lock.js --out-file index.js",
+    "build": "babel -d lib src",
     "prepublish": "npm run build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "dev": "npm test -- --watch"
