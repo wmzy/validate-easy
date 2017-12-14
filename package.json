@@ -17,8 +17,13 @@
     "functional"
   ],
   "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wmzy/validate-easy"
+  },
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "coveralls": "^3.0.0",
