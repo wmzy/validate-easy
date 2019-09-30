@@ -1,89 +1,91 @@
-import _ from 'lodash/fp';
+import ValidateError from './error';
 
-export class ValidateError extends Error {
-    constructor(message) {
-      super(message);
-      this.path = [];
+function throwWith(e, key, value) {
+  if (e instanceof ValidateError) {
+    e.join(key);
+    e.value = value;
+  }
+  throw e;
+}
 
-      this.constructor = ValidateError
-      this.__proto__   = ValidateError.prototype
-      this.name = this.constructor.name;
-      if (typeof Error.captureStackTrace === 'function') {
-        Error.captureStackTrace(this, this.constructor);
-      } else {
-        this.stack = (new Error(message)).stack;
+export function validate(...fns) {
+  return value => fns.reduce((value, fn) => fn(value), value);
+}
+
+export const v = validate;
+
+export function validateCatch(...fns) {
+  const catcher = fns.pop();
+  return value => {
+    try {
+      return validate(...fns)(value);
+    } catch (e) {
+      return catcher(e);
+    }
+  };
+}
+
+export const vc = validateCatch;
+
+export function validateOr(...fns) {
+  const or = fns.pop();
+  return validateCatch(...fns, () => or);
+}
+
+export const vo = validateOr;
+
+export function validateOrThrow(...fns) {
+  const template = fns.pop();
+  return validateCatch(...fns, e => {
+    e.template = template;
+    throw e;
+  });
+}
+
+export const vot = validateOrThrow;
+
+export function prop(key) {
+  return (...fns) => value => {
+    try {
+      return {
+        ...value,
+        [key]: validate(...fns)(value[key])
+      };
+    } catch (e) {
+      return throwWith(e, key, value);
+    }
+  };
+}
+
+export const p = prop;
+
+export function optionalProp(key) {
+  return (...fns) => value => {
+    if (key in value) {
+      return prop(key)(...fns)(value);
+    }
+    return value;
+  };
+}
+
+export const op = optionalProp;
+
+export function every(...fns) {
+  return values => {
+    if (!Array.isArray(values)) return values;
+    return values.map((value, index) => {
+      try {
+        return validate(...fns)(value);
+      } catch (e) {
+        return throwWith(e, index, value);
       }
-    }
-
-    join(path) {
-        this.path.unshift(path);
-    }
-
-    toString() {
-      let path = this.path.join('.');
-      path = path ? `[${path}]` : 'value';
-
-      return `${this.name || 'Error'}: ${path} ${this.message}`
-    }
+    });
+  };
 }
 
-export default function validate(...fnArr) {
-  return value => {
-    for (let fn of fnArr) {
-      value = fn(value);
-      if (value instanceof ValidateError) return value;
-    }
-    return value;
-  }
-}
-
-export function assert(...fnArr) {
-  return value => {
-    for (let fn of fnArr) {
-      value = fn(value);
-      if (value instanceof ValidateError) throw value;
-    }
-    return value;
-  }
-}
-
-export function path(path) {
-  return (...fnArr) => value => {
-    const res = validate(...fnArr)(_.get(path, value));
-    if (res instanceof ValidateError) {
-      res.join(path);
-      return res;
-    }
-    return _.set(path, res, value);
-  }
-}
-
-export function wrap (fn, message) {
+export function wrap(fn, message) {
   return v => {
     if (fn(v)) return v;
     return new ValidateError(message);
-  }
-}
-
-export function hasProps(...props) {
-  return obj => {
-    for (let p of props) {
-      if (!_.hasIn(p, obj)) return new ValidateError(`has not prop [${p}]`);
-    }
-    return obj;
-  }
-}
-
-export const isNumber = wrap(_.isNumber, 'should be a number')
-export const isInt = wrap(_.isInteger, 'should be a number')
-
-export const lt = rv => wrap(v => v < rv, `should lt ${rv}`)
-export const gt = rv => wrap(v => v > rv, `should gt ${rv}`)
-
-export function isValidateError(e) {
-  return e instanceof ValidateError;
-}
-
-export function assertValue(err) {
-  if (isValidateError(err)) throw err;
+  };
 }
