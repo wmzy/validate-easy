@@ -1,25 +1,34 @@
 [![Build Status](https://travis-ci.org/wmzy/validate-easy.svg?branch=master)](https://travis-ci.org/wmzy/validate-easy)
 [![Coverage Status](https://coveralls.io/repos/github/wmzy/validate-easy/badge.svg?branch=master)](https://coveralls.io/github/wmzy/validate-easy?branch=master)
-## Validate easy
+# Validate Easy
 
-> (wip) Validate your data easy with pipeline style.
+> Validate your data easy with pipeline style.
 
-### Install
+## Why
+
+Most existing validation libraries are based on the schema, which makes it so heavy and hard to extend.
+
+- **Tiny and tree-shaking friendly.** 
+- **Easy to extend.**
+- **Easy to combine with other libraries.**
+- **Detailed errors.**
+
+## Install
 
 ```bash
 npm install validate-easy
 ```
 
-### Usage
+## Usage
 
 ```javascript
 import _ from 'lodash';
-import v from 'validate-easy';
+import * as v from 'validate-easy';
 
-const data = v.assert(
-  v.hasProps('foo', 'bar', 'baz'),
-  v.path('foo')(v.isNumber, v.lt(10), v.gt(0)),
-  v.path('bar')(_.trim, Number, v.isInt)
+const data = v.v(
+  v.required('foo', 'bar', 'baz'),
+  v.prop('foo')(v.isNumber, v.lt(10), v.gt(0)),
+  v.prop('bar')(_.trim, Number, v.isInt)
 )({
   foo: 5,
   bar: ' 4',
@@ -36,7 +45,11 @@ console.log(data);
 
 ```
 
-### TODO
+## Error Handling
+
+// todo
+
+## TODO
 
 - [x] pipe function
 - [ ] build for node and browser
